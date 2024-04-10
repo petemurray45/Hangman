@@ -1,6 +1,7 @@
-# This is a sample Python script.
-# Step 1
+
 import random
+import words
+import hangman_art
 
 stages = ['''
   +---+
@@ -59,10 +60,11 @@ stages = ['''
 =========
 ''']
 
-word_list = ["aardvark", "baboon", "camel"]
-ran_choice = random.randint(0, 2)
+word_list = words.word_list
+ran_choice = random.randint(0, len(word_list))
 chosen_word = word_list[ran_choice]
-print(chosen_word)
+print(hangman_art.logo)
+
 display_word = []
 
 for element in chosen_word:
@@ -76,7 +78,7 @@ wrong_answer = 0
 player_lives = 6
 
 while not end_of_game:
-    guess = input("Guess a letter in the hidden word ").lower()
+    guess = input("\nGuess a letter in the hidden word: ").lower()
     for position in range(len(chosen_word)):
         letter = chosen_word[position]
         if letter == guess:
@@ -84,10 +86,16 @@ while not end_of_game:
 
     if guess not in chosen_word:
         player_lives -= 1
-        print(f"Wrong! You have {player_lives} lives left.")
+        print(f"Wrong!\nYou guessed the letter '{guess}'\nYou have {player_lives} lives left.")
         print(stages[player_lives])
         if player_lives == 0:
-            print("Out of Lives! Try again next time.")
+            print(f"Out of Lives!\nThe word was {chosen_word}\nTry again next time.")
             end_of_game = True
+
+    elif "_" not in display_word:
+        winner = True
+        print("You win!")
+        print(display_word)
+        break
 
     print(display_word)
